@@ -1,7 +1,9 @@
 services:
   ollama:
     container_name: ollama
-    image: ollama/ollama
+    build:
+      context: .
+      dockerfile: Ollama.Dockerfile
     restart: unless-stopped
     tty: true
     ports:
@@ -20,11 +22,11 @@ services:
     restart: unless-stopped
     environment:
       OLLAMA_BASE_URL: http://ollama:11434
-      OFFLINE_MODE: true
+#      OFFLINE_MODE: true
       ENABLE_DIRECT_CONNECTIONS: false
       ENABLE_OPENAI_API: false
       AUTODOWNLOAD_MODELS: false
-      INSTALL_EXTENSIONS: false
+#      INSTALL_EXTENSIONS: false
     ports:
       - "3010:8080"
     volumes:

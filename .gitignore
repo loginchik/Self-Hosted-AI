@@ -1,6 +1,7 @@
 # Project data
 AI.iml
 .idea/
+.DS_Store
 
 # Storage
 data/
