@@ -1,0 +1,37 @@
+services:
+  ollama:
+    container_name: ollama
+    image: ollama/ollama
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./data/ollama:/root/.ollama
+      - ./ollama-entrypoint.sh:/root/entrypoint.sh:ro
+    deploy:
+      resources:
+        limits:
+          memory: 6gb
+
+  webui:
+    container_name: open-webui
+    image: ghcr.io/open-webui/open-webui:main
+    restart: unless-stopped
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434/api
+      AUTODOWNLOAD_MODELS: false
+      ENABLE_DIRECT_CONNECTIONS: false
+      ENABLE_OPENAI_API: false
+    ports:
+      - "3010:8080"
+    volumes:
+      - ./data/open-webui:/app/backend/data
+      - ~/.ollama/models:/root/.ollama/models
+    depends_on:
+      - ollama
+    deploy:
+      resources:
+        limits:
+          memory: 1gb
+          cpus: 1
